@@ -1,0 +1,28 @@
+name: SHANKH_G Ghost Engine
+
+on:
+  schedule:
+    # Runs automatically at 04:00 AM Kolkata time daily
+    - cron: '30 22 * * *' 
+  workflow_dispatch:
+
+jobs:
+  run-engine:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install Dependencies
+        run: |
+          pip install google-generativeai google-api-python-client google-auth-httplib2 google-auth-oauthlib
+
+      - name: Execute Engine
+        env:
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+        run: python master_automation_v1_working.py
